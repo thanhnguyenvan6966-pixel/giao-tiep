@@ -19,410 +19,12 @@
 
     * { box-sizing: border-box; font-family: 'Nunito', 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
     body { background-color: var(--bg); color: var(--text); padding: 16px; display: flex; justify-content: center; }
-    .container { width: 100%; max-width: 900px; background: var(--card); border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.07); padding: 24px; }
-
-    /* Header */
-    .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 2px dashed #E2E8F0; padding-bottom: 16px; margin-bottom: 16px; }
-    .unit-badge-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .unit-select { padding: 6px 12px; font-size: 15px; font-weight: bold; border: 2px solid var(--primary); border-radius: 8px; color: var(--primary); background: white; cursor: pointer; max-width: 280px; }
-    .score-badge { background: #FEF3C7; color: #B45309; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 15px; border: 1px solid #FDE68A; }
-
-    /* Buttons */
-    .btn { padding: 8px 14px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.15s; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-warning { background: #F59E0B; color: white; }
-    .btn-warning:hover { background: #D97706; }
-    .btn-danger { background: #EF4444; color: white; }
-    .btn-success { background: #10B981; color: white; }
-    .btn-secondary { background: #64748B; color: white; }
-    .btn-backup { background: #8B5CF6; color: white; }
-    .btn-roleplay { background: #EA580C; color: white; }
-    .btn-quiz-vocab { background: #F59E0B; color: white; }
-    .btn-quiz-vocab:hover { background: #D97706; }
-    .btn-mic { background: #F43F5E; color: white; }
-    .btn-mic.recording { animation: pulse 1s infinite alternate; background: #BE123C; }
-
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); }
-      100% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(244, 63, 94, 0); }
-    }
-
-    /* Input Box */
-    .input-box { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px; margin-bottom: 18px; }
-    .input-box textarea { width: 100%; height: 85px; padding: 10px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 15px; resize: vertical; line-height: 1.5; }
-    .input-controls { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-
-    /* Audio Bar */
-    .audio-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: #EEF2F6; padding: 10px 16px; border-radius: 12px; margin-bottom: 18px; }
-    .btn-audio { background: white; border: 1px solid #CBD5E1; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; }
-    .btn-audio:hover { background: #E2E8F0; }
-    .audio-settings { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; font-size: 13px; color: #475569; }
-    .audio-settings select { padding: 4px 8px; border-radius: 6px; border: 1px solid #CBD5E1; background: white; }
-
-    /* Tabs 1 hàng ngang duy nhất */
-    .tab-nav { 
-      display: flex; 
-      gap: 4px; 
-      border-bottom: 2px solid #E2E8F0; 
-      margin-bottom: 18px; 
-      flex-wrap: nowrap; 
-      overflow-x: auto; 
-      scrollbar-width: thin; 
-      white-space: nowrap; 
-    }
-    .tab-btn { 
-      background: none; 
-      border: none; 
-      padding: 10px 12px; 
-      font-size: 14.5px; 
-      font-weight: bold; 
-      color: #64748B; 
-      cursor: pointer; 
-      border-bottom: 3px solid transparent; 
-      flex-shrink: 0; 
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .tab-btn.active { color: var(--primary); border-color: var(--primary); }
-    .tab-content { display: none; min-height: 250px; }
-    .tab-content.active { display: block; }
-
-    /* Tab 1: Listening */
-    .listen-sentence { padding: 10px 14px; border-radius: 10px; margin-bottom: 8px; font-size: 17px; line-height: 1.6; border: 1.5px solid transparent; transition: 0.2s; }
-    .listen-sentence.highlight { background: #EFF6FF; border-color: var(--primary); color: #1D4ED8; font-weight: 600; }
-    .blur-text { filter: blur(6px); user-select: none; transition: 0.3s; }
-
-    /* Tab 2: Speaking & Role-play */
-    .roleplay-panel { background: #FFF7ED; border: 1.5px solid #FDBA74; border-radius: 12px; padding: 14px; margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-    .roleplay-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .roleplay-select { padding: 6px 10px; border-radius: 6px; border: 1px solid #F97316; font-weight: bold; color: #C2410C; background: white; }
-    
-    .speak-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px; margin-bottom: 14px; transition: 0.2s; }
-    .speak-card.active-turn { border: 2px solid #EA580C; background: #FFFBEB; box-shadow: 0 4px 12px rgba(234, 88, 12, 0.15); }
-    .speak-speaker-tag { display: inline-block; font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px; }
-    .speaker-bot { background: #E0E7FF; color: #3730A3; }
-    .speaker-user { background: #DCFCE7; color: #166534; }
-
-    .speak-target-text { font-size: 17px; font-weight: 600; margin-bottom: 8px; color: #1E293B; line-height: 1.5; }
-    .speak-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-    .speak-feedback { font-size: 15px; margin-top: 6px; padding: 8px 12px; border-radius: 8px; background: white; border: 1px solid #E2E8F0; min-height: 38px; display: flex; align-items: center; gap: 6px; }
-    .word-match { color: #15803D; font-weight: bold; }
-    .word-miss { color: #DC2626; text-decoration: line-through; }
-
-    /* Tab 3: Nghe - Hiểu */
-    .listen-quiz-card { background: #F0FDFA; border: 1.5px solid #99F6E4; border-radius: 14px; padding: 18px; margin-bottom: 16px; }
-    .listen-quiz-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
-    .listen-quiz-tag { font-size: 13px; font-weight: bold; color: #0F766E; background: #CCFBF1; padding: 4px 10px; border-radius: 6px; }
-    .btn-audio-question { background: #0D9488; color: white; font-size: 14px; font-weight: bold; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.15s; }
-    .btn-audio-question:hover { background: #0F766E; }
-
-    /* Tab 4: Quiz */
-    .quiz-card { background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-    .quiz-question-title { font-size: 16px; font-weight: 800; color: #0F172A; margin-bottom: 12px; }
-    .quiz-option-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding: 10px 14px; border-radius: 8px; cursor: pointer; border: 1px solid #E2E8F0; background: white; transition: 0.15s; font-size: 15px; }
-    .quiz-option-item:hover { background-color: #F8FAFC; border-color: #CBD5E1; }
-    .quiz-option-item input[type="radio"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
-    .quiz-option-item.correct { background-color: var(--success-bg) !important; border-color: var(--success-border) !important; color: #15803D; font-weight: bold; }
-    .quiz-option-item.wrong { background-color: var(--danger-bg) !important; border-color: var(--danger-border) !important; color: #B91C1C; font-weight: bold; }
-    .quiz-hint-box { font-size: 13px; font-weight: bold; margin-top: 8px; }
-
-    /* Tab 5: Vocab */
-    .vocab-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
-    .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
-    .vocab-card { border: 1px solid #E2E8F0; border-radius: 10px; padding: 14px; background: white; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); position: relative; }
-    .btn-delete-vocab { position: absolute; top: 6px; right: 6px; background: none; border: none; font-size: 14px; color: #94A3B8; cursor: pointer; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .btn-delete-vocab:hover { background: #FEE2E2; color: #EF4444; }
-    .vocab-word { font-size: 18px; font-weight: bold; color: var(--primary); margin-top: 4px; }
-    .vocab-meaning { font-size: 14px; color: #047857; margin-top: 5px; font-weight: 600; min-height: 20px; cursor: pointer; }
-    .vocab-meaning:hover { text-decoration: underline; }
-    .vocab-actions { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
-
-    /* Modal Ghi Nhớ Từ Vựng */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 999; justify-content: center; align-items: center; padding: 16px; }
-    .modal-card { background: white; width: 100%; max-width: 530px; border-radius: 18px; padding: 22px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); max-height: 95vh; overflow-y: auto; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed #E2E8F0; padding-bottom: 12px; margin-bottom: 12px; }
-    
-    .mode-tab-group { display: flex; gap: 4px; background: #F1F5F9; padding: 4px; border-radius: 10px; margin-bottom: 14px; }
-    .mode-tab-btn { flex: 1; padding: 8px 6px; border-radius: 8px; border: none; background: transparent; font-weight: bold; font-size: 12.5px; color: #475569; cursor: pointer; transition: 0.15s; text-align: center; }
-    .mode-tab-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
-
-    /* Flashcard */
-    .flashcard-box { border: 2.5px dashed #93C5FD; background: #EFF6FF; border-radius: 16px; padding: 30px 16px; text-align: center; margin-bottom: 14px; min-height: 160px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.2s; }
-    .flashcard-box:active { transform: scale(0.98); }
-    .flashcard-word { font-size: 32px; font-weight: 900; color: #1E40AF; margin-bottom: 6px; }
-    .flashcard-meaning { font-size: 22px; font-weight: 700; color: #047857; }
-
-    /* Trắc nghiệm */
-    .quiz-vocab-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-    .btn-vocab-opt { padding: 12px 14px; font-size: 14px; font-weight: bold; border-radius: 10px; border: 1.5px solid #CBD5E1; background: white; cursor: pointer; text-align: center; transition: 0.15s; }
-    .btn-vocab-opt:hover { background: #F1F5F9; border-color: #94A3B8; }
-    .btn-vocab-opt.correct { background: var(--success-bg) !important; border-color: var(--success-border) !important; color: #15803D !important; }
-    .btn-vocab-opt.wrong { background: var(--danger-bg) !important; border-color: var(--danger-border) !important; color: #B91C1C !important; }
-
-    /* Đảo chữ cái (Scramble Word) */
-    .scramble-box { display: none; text-align: center; padding: 6px 0; }
-    .scramble-slots { min-height: 52px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; padding: 6px; background: #F8FAFC; border: 1.5px dashed #CBD5E1; border-radius: 12px; }
-    .scramble-bank { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .char-tile { width: 44px; height: 48px; font-size: 22px; font-weight: 800; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.15s; user-select: none; }
-    .char-tile.bank { background: #3B82F6; color: white; border: 2px solid #2563EB; box-shadow: 0 3px 0 #1D4ED8; }
-    .char-tile.bank:active { transform: translateY(2px); box-shadow: none; }
-    .char-tile.bank.used { visibility: hidden; pointer-events: none; }
-    .char-tile.slot { background: white; color: #1E293B; border: 2px solid #94A3B8; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-
-    /* Tab 6: Grammar */
-    .grammar-text { font-size: 17px; line-height: 2.4; color: #334155; }
-    .grammar-select { padding: 3px 8px; border-radius: 6px; border: 1.5px solid #94A3B8; font-size: 15px; background: white; font-weight: 600; cursor: pointer; margin: 0 2px; }
-    .grammar-select.correct { border-color: var(--success-border); background-color: var(--success-bg); color: #15803D; }
-    .grammar-select.wrong { border-color: var(--danger-border); background-color: var(--danger-bg); color: #B91C1C; }
-    .grammar-hint { font-size: 13px; color: var(--danger-border); font-weight: bold; margin-left: 3px; }
-
-    .action-row { margin-top: 18px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-  </style>
-</head>
-<body>
-
-<div class="container">
-  <div class="header">
-    <div class="unit-badge-group">
-      <label for="unit-dropdown" style="font-weight: bold; color: #475569;">Bài học:</label>
-      <select id="unit-dropdown" class="unit-select" onchange="onSelectUnit(this.value)"></select>
-      <button class="btn btn-warning" onclick="editCurrentUnitTitle()" title="Sửa tên bài học này">✏️ Sửa tên</button>
-      <button class="btn btn-primary" onclick="promptAddNewUnit()">+ Thêm Unit</button>
-      <button class="btn btn-danger" onclick="deleteCurrentUnit()">🗑️ Xóa</button>
-      <button class="btn btn-backup" onclick="exportDataToFile()" title="Tải toàn bộ bài học về lưu trong máy tính">📥 Lưu về máy</button>
-      <button class="btn btn-success" onclick="document.getElementById('import-file-input').click()" title="Mở file bài học đã lưu từ máy tính">📤 Mở từ máy</button>
-      <input type="file" id="import-file-input" accept=".json" style="display:none;" onchange="importDataFromFile(event)">
-    </div>
-    <div class="score-badge">⭐ <span id="star-count">0</span> Điểm thưởng</div>
-  </div>
-
-  <div class="input-box">
-    <textarea id="custom-script" placeholder="Dán văn bản tiếng Anh vào đây..."></textarea>
-    <div class="input-controls">
-      <button class="btn btn-primary" onclick="saveAndApplyCurrentScript()">💾 Lưu & Cập Nhật Toàn Bộ</button>
-    </div>
-  </div>
-
-  <div class="audio-bar">
-    <button class="btn-audio" onclick="playFullScript()" title="Nghe toàn bộ">▶</button>
-    <button class="btn-audio" onclick="pauseAudio()" title="Tạm dừng">⏸</button>
-    <button class="btn-audio" onclick="stopAudio()" title="Dừng">⏹</button>
-    
-    <div class="audio-settings">
-      <label for="voice-select">Giọng đọc:</label>
-      <select id="voice-select"></select>
-      <label for="audio-speed">Tốc độ:</label>
-      <select id="audio-speed">
-        <option value="0.55">0.55x (Rất chậm)</option>
-        <option value="0.65" selected>0.65x (Chuẩn cho bé)</option>
-        <option value="0.75">0.75x (Vừa phải)</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Thanh điều hướng Tab 1 hàng ngang duy nhất -->
-  <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('listen', this)">🎧 Nghe</button>
-    <button class="tab-btn" onclick="switchTab('speak', this)">🎤 Nói (Role-play)</button>
-    <button class="tab-btn" onclick="switchTab('listen-quiz', this)">👂 Nghe - Hiểu</button>
-    <button class="tab-btn" onclick="switchTab('quiz', this)">📝 Quiz</button>
-    <button class="tab-btn" onclick="switchTab('vocab', this)">📚 Từ Vựng</button>
-    <button class="tab-btn" onclick="switchTab('grammar', this)">✏️ Grammar</button>
-  </div>
-
-  <!-- Tab 1: Luyện Nghe -->
-  <div id="tab-listen" class="tab-content active">
-    <div style="margin-bottom: 12px; display: flex; justify-content: flex-end;">
-      <button class="btn btn-primary" onclick="toggleBlindMode()" id="btn-blind">🙈 Bật Giấu Chữ (Luyện Nghe Bằng Tai)</button>
-    </div>
-    <div id="listen-container"></div>
-  </div>
-
-  <!-- Tab 2: Luyện Nói & Đóng Vai -->
-  <div id="tab-speak" class="tab-content">
-    <div class="roleplay-panel" id="roleplay-panel">
-      <div>
-        <div style="font-weight: bold; color: #9A3412; font-size: 15px;">🎭 Chế độ Đóng vai Đối thoại (Role-play)</div>
-        <div style="font-size: 13px; color: #C2410C;">Máy sẽ nói trước, sau đó tự bật Mic để bé nói đối đáp liên tục!</div>
-      </div>
-      <div class="roleplay-controls">
-        <label for="user-role-select" style="font-size: 14px; font-weight: bold; color: #9A3412;">Bé muốn đóng vai:</label>
-        <select id="user-role-select" class="roleplay-select"></select>
-        <button class="btn btn-roleplay" id="btn-start-roleplay" onclick="toggleRolePlay()">▶ Bắt Đầu Đối Thoại</button>
-      </div>
-    </div>
-    <div id="speak-container"></div>
-  </div>
-
-  <!-- Tab 3: Nghe - Hiểu -->
-  <div id="tab-listen-quiz" class="tab-content">
-    <div style="background: #F0FDFA; border: 1px solid #99F6E4; padding: 12px; border-radius: 10px; margin-bottom: 16px; font-size: 14px; color: #0F766E;">
-      👂 <b>Luyện phản xạ tai:</b> Bé hãy bấm nút <b>"🔊 Bấm Nghe Câu Này"</b>, chú ý nghe thật kỹ xem máy đọc từ gì rồi chọn đúng câu văn bên dưới nhé!
-    </div>
-    <div id="listen-quiz-container"></div>
-    <div class="action-row">
-      <button class="btn btn-primary" onclick="checkListenQuiz()">Kiểm Tra Bài Nghe</button>
-      <button class="btn btn-secondary" onclick="resetListenQuiz()">Làm Lại</button>
-      <span id="listen-quiz-score" style="font-size: 14px; font-weight: bold; color: #0F766E;"></span>
-    </div>
-  </div>
-
-  <!-- Tab 4: Quiz -->
-  <div id="tab-quiz" class="tab-content">
-    <div id="quiz-container"></div>
-    <div class="action-row">
-      <button class="btn btn-primary" onclick="checkQuiz()">Kiểm Tra Đáp Án</button>
-      <button class="btn btn-secondary" onclick="resetQuiz()">Làm Lại</button>
-      <span id="quiz-score-txt" style="font-size: 14px; font-weight: bold; color: #475569;"></span>
-    </div>
-  </div>
-
-  <!-- Tab 5: Từ Vựng -->
-  <div id="tab-vocab" class="tab-content">
-    <div class="vocab-toolbar">
-      <span style="font-size: 14px; color: #64748B;">💡 Bấm vào nghĩa tiếng Việt để sửa | Bấm ✕ để xóa từ không cần học</span>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <button class="btn btn-quiz-vocab" onclick="openVocabQuizModal('flashcard')">🎯 Kiểm Tra Ghi Nhớ</button>
-        <button class="btn btn-success" onclick="promptAddNewVocab()">+ Thêm từ mới</button>
-      </div>
-    </div>
-    <div class="vocab-grid" id="vocab-container"></div>
-  </div>
-
-  <!-- Tab 6: Grammar -->
-  <div id="tab-grammar" class="tab-content">
-    <div class="grammar-text" id="grammar-container"></div>
-    <div class="action-row">
-      <button class="btn btn-primary" onclick="checkGrammar()">Nộp Bài</button>
-      <button class="btn btn-secondary" onclick="resetGrammar()">Làm Lại</button>
-      <span id="attempts-txt" style="font-size: 14px; color: #64748B;">Còn lại: 3 lượt</span>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Kiểm Tra Ghi Nhớ (Flashcard - Trắc nghiệm - Đảo chữ cái) -->
-<div id="vocab-quiz-modal" class="modal-overlay">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h3 id="modal-quiz-title" style="color: #1E293B; font-size: 18px;">🎯 Kiểm Tra Ghi Nhớ Từ Vựng</h3>
-      <button onclick="closeVocabQuizModal()" style="background: none; border: none; font-size: 20px; font-weight: bold; color: #94A3B8; cursor: pointer;">✕</button>
-    </div>
-    
-    <div class="mode-tab-group">
-      <button class="mode-tab-btn active" id="btn-mode-flashcard" onclick="setVocabQuizMode('flashcard')">🃏 Flashcard</button>
-      <button class="mode-tab-btn" id="btn-mode-choice" onclick="setVocabQuizMode('choice')">🎯 Trắc Nghiệm</button>
-      <button class="mode-tab-btn" id="btn-mode-scramble" onclick="setVocabQuizMode('scramble')">🧩 Sắp Xếp Chữ</button>
-    </div>
-
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-      <span id="vq-progress" style="font-weight: bold; color: #64748B; font-size: 14px;">Từ: 1/5</span>
-      <span id="vq-score" style="font-weight: bold; color: #047857; font-size: 14px;">Đúng: 0 ⭐</span>
-    </div>
-
-    <div class="flashcard-box" id="vq-card" onclick="flipFlashcard()">
-      <div class="flashcard-word" id="vq-word">Child</div>
-      <div class="flashcard-meaning" id="vq-meaning" style="display: none;">đứa trẻ</div>
-      <div id="vq-hint-text" style="margin-top: 8px; font-size: 13px; color: #64748B;">(Chạm vào ô để lật xem nghĩa)</div>
-    </div>
-
-    <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 14px;" id="vq-sound-bar">
-      <button class="btn btn-primary" style="padding: 6px 14px;" onclick="speakVocabQuizWord()">🔊 Nghe phát âm</button>
-      <button class="btn btn-secondary" id="btn-fc-prev" style="display: none; padding: 6px 12px;" onclick="prevFlashcard()">← Trước</button>
-      <button class="btn btn-primary" id="btn-fc-next" style="display: none; padding: 6px 12px;" onclick="nextFlashcard()">Tiếp →</button>
-    </div>
-
-    <!-- Dạng 1: Trắc nghiệm lựa chọn nghĩa (Mini Quiz) -->
-    <div id="vq-choice-container" style="display: none;">
-      <div style="font-size: 14px; font-weight: bold; color: #334155; margin-bottom: 8px;">Chọn nghĩa tiếng Việt chính xác:</div>
-      <div class="quiz-vocab-options" id="vq-options"></div>
-    </div>
-
-    <!-- Dạng 2: Sắp xếp các ký tự bị đảo (Scramble Word) -->
-    <div id="vq-scramble-container" class="scramble-box">
-      <div id="scramble-meaning" style="font-size: 16px; font-weight: bold; color: #047857; margin-bottom: 10px;">Nghĩa: ...</div>
-      <div style="font-size: 13px; color: #64748B; margin-bottom: 6px;">Bé hãy chạm vào các chữ cái để ghép đúng từ nhé:</div>
-      
-      <div class="scramble-slots" id="scramble-slots" title="Bấm vào chữ đã chọn để gỡ ra"></div>
-      <div class="scramble-bank" id="scramble-bank"></div>
-
-      <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;">
-        <button class="btn btn-success" onclick="checkScrambleAnswer()">Kiểm Tra Kết Quả</button>
-        <button class="btn btn-secondary" onclick="resetScrambleCurrent()">Làm Lại Từ Này</button>
-      </div>
-    </div>
-
-    <div id="vq-feedback" style="margin-top: 14px; font-weight: bold; font-size: 15px; min-height: 24px; text-align: center;"></div>
-  </div>
-</div>
-
-<script>
-  let stars = 0;
-  let attempts = 3;
-  let currentQuizData = [];
-  let currentListenQuizData = [];
-  let availableVoices = [];
-  let isPlayingQueue = false;
-  let isBlindMode = false;
-
-  // Role-play State
-  let isRolePlaying = false;
-  let rolePlayIndex = 0;
-  let currentDialogueList = [];
-  let detectedRoles = [];
-
-  // Vocab Quiz State (3 modes: flashcard, choice, scramble)
-  let vqItems = [];
-  let vqCurrentIndex = 0;
-  let vqCorrectCount = 0;
-  let vqIsFlipped = false;
-  let vqMode = 'flashcard';
-
-  // Scramble State
-  let scrambleOriginalWord = '';
-  let scrambleBankChars = [];
-  let scrambleChosenChars = [];
-
-  // Web Speech Recognition
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  let recognition = null;
-  if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.Dưới đây là mã nguồn hoàn chỉnh của file `index.html`. 
-
-Hệ thống đã được bổ sung thêm nút **"✏️ Sửa Tên"** màu vàng cam ngay bên cạnh nút **"+ Thêm Unit"** và **"🗑️ Xóa"**. Khi bạn bấm vào, một hộp thoại sẽ xuất hiện để bạn đổi tên tiêu đề bài học hiện tại (ví dụ sửa thành `UNIT 4: IN THE CITY` như trong ảnh của bạn), hệ thống sẽ lưu ngay vào bộ nhớ trình duyệt và cập nhật lập tức lên danh sách lựa chọn.
-
----
-
-### Toàn bộ mã nguồn hoàn chỉnh (Thay thế file `index.html`)
-
-```html
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bé Luyện Tiếng Anh Toàn Diện - Listening & Speaking</title>
-  <style>
-    :root {
-      --primary: #3B82F6;
-      --primary-hover: #2563EB;
-      --success-bg: #DCFCE7;
-      --success-border: #16A34A;
-      --danger-bg: #FEE2E2;
-      --danger-border: #DC2626;
-      --bg: #F0F4F8;
-      --card: #FFFFFF;
-      --text: #1E293B;
-    }
-
-    * { box-sizing: border-box; font-family: 'Nunito', 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
-    body { background-color: var(--bg); color: var(--text); padding: 16px; display: flex; justify-content: center; }
     .container { width: 100%; max-width: 920px; background: var(--card); border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.07); padding: 24px; }
 
     /* Header */
     .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 2px dashed #E2E8F0; padding-bottom: 16px; margin-bottom: 16px; }
     .unit-badge-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .unit-select { padding: 6px 12px; font-size: 15px; font-weight: bold; border: 2px solid var(--primary); border-radius: 8px; color: var(--primary); background: white; cursor: pointer; }
+    .unit-select { padding: 6px 12px; font-size: 15px; font-weight: bold; border: 2px solid var(--primary); border-radius: 8px; color: var(--primary); background: white; cursor: pointer; max-width: 260px; }
     .score-badge { background: #FEF3C7; color: #B45309; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 15px; border: 1px solid #FDE68A; }
 
     /* Buttons */
@@ -698,7 +300,7 @@ Hệ thống đã được bổ sung thêm nút **"✏️ Sửa Tên"** màu và
   </div>
 </div>
 
-<!-- Modal Kiểm Tra Ghi Nhớ (Flashcard - Trắc nghiệm - Đảo chữ cái) -->
+<!-- Modal Kiểm Tra Ghi Nhớ -->
 <div id="vocab-quiz-modal" class="modal-overlay">
   <div class="modal-card">
     <div class="modal-header">
@@ -782,10 +384,14 @@ Hệ thống đã được bổ sung thêm nút **"✏️ Sửa Tên"** màu và
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recognition = null;
   if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.continuous = false;
-    recognition.interimResults = false;
+    try {
+      recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+    } catch(e) {
+      console.warn("SpeechRecognition not initialized:", e);
+    }
   }
 
   // Web Audio API
@@ -873,7 +479,7 @@ Child: Yes, I must!`;
   ];
   let currentUnitId = units[0].id;
 
-  // --- TÍNH NĂNG MỚI: SỬA TIÊU ĐỀ BÀI HỌC ---
+  // --- TÍNH NĂNG: SỬA TIÊU ĐỀ BÀI HỌC ---
   function promptEditUnitTitle() {
     const unit = units.find(u => u.id === currentUnitId);
     if (!unit) return;
@@ -1321,7 +927,7 @@ Child: Yes, I must!`;
             ${options.map((opt, oIdx) => `
               <label class="quiz-option-item" id="opt-listen-${qId}-${opt.val}">
                 <input type="radio" name="${qId}" value="${opt.val}">
-                <span>${String.fromCharCode(65 + oIdx)}) ${opt.label}</span>
+                <span>${String.fromCharCode(65 + oIdx)})${opt.label}</span>
               </label>
             `).join('')}
           </div>
@@ -1526,7 +1132,7 @@ Child: Yes, I must!`;
     const el = document.getElementById(elementId);
     if (!el) return;
     try {
-      const res = await fetch(`[https://api.mymemory.translated.net/get?q=$](https://api.mymemory.translated.net/get?q=$){encodeURIComponent(word)}&langpair=en|vi`);
+      const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|vi`);
       const data = await res.json();
       if (data && data.responseData && data.responseData.translatedText) {
         let trans = data.responseData.translatedText.toLowerCase();
