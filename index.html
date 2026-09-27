@@ -138,6 +138,10 @@
     .vocab-meaning:hover { text-decoration: underline; }
     .vocab-actions { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
 
+    /* Khu vực dán nhanh từ vựng trong Tab Từ Vựng */
+    .vocab-import-box { background: #F8FAFC; border: 1.5px dashed #CBD5E1; border-radius: 12px; padding: 14px; margin-bottom: 16px; display: none; }
+    .vocab-import-box textarea { width: 100%; height: 110px; padding: 10px; border-radius: 8px; border: 1px solid #94A3B8; font-size: 14px; font-family: monospace; resize: vertical; line-height: 1.5; }
+
     /* Modal che mờ tuyệt đối */
     .modal-overlay { 
       display: none; 
@@ -229,9 +233,9 @@
   </div>
 
   <div class="input-box">
-    <textarea id="custom-script" placeholder="Dán văn bản tiếng Anh vào đây, hoặc dán danh sách từ vựng dạng:&#10;bank: ngân hàng&#10;bus station: bến xe buýt"></textarea>
+    <textarea id="custom-script" placeholder="Dán văn bản đoạn hội thoại tiếng Anh vào đây (Chỉ nhập tiếng Anh)..."></textarea>
     <div class="input-controls">
-      <button class="btn btn-primary" onclick="saveAndApplyCurrentScript()">💾 Lưu & Cập Nhật Toàn Bộ</button>
+      <button class="btn btn-primary" onclick="saveAndApplyCurrentScript()">💾 Lưu & Cập Nhật Bài Đọc</button>
     </div>
   </div>
 
@@ -309,15 +313,29 @@
     </div>
   </div>
 
-  <!-- Tab 5: Từ Vựng -->
+  <!-- Tab 5: Từ Vựng (Đã bổ sung khu vực dán riêng) -->
   <div id="tab-vocab" class="tab-content">
     <div class="vocab-toolbar">
-      <span style="font-size: 14px; color: #64748B;">💡 Bấm vào nghĩa tiếng Việt để sửa | Bấm ✕ để xóa từ không cần học</span>
+      <span style="font-size: 14px; color: #64748B;">💡 Bấm vào nghĩa tiếng Việt để sửa | Bấm ✕ để xóa từ</span>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="toggleVocabImportBox()">📋 Nhập Danh Sách Từ Vựng</button>
         <button class="btn btn-quiz-vocab" onclick="openVocabQuizModal('speak')">🎯 Kiểm Tra Ghi Nhớ</button>
         <button class="btn btn-success" onclick="promptAddNewVocab()">+ Thêm từ mới</button>
       </div>
     </div>
+
+    <!-- Khung nhập nhanh từ vựng riêng biệt không ảnh hưởng 5 Tab còn lại -->
+    <div id="vocab-import-box" class="vocab-import-box">
+      <div style="font-size: 13.5px; font-weight: bold; color: #334155; margin-bottom: 6px;">
+        📝 Dán danh sách từ vựng dạng: <code>tiếng anh: tiếng việt</code> (mỗi từ một dòng)
+      </div>
+      <textarea id="vocab-bulk-input" placeholder="bank: ngân hàng&#10;bus station: bến xe buýt&#10;cinema: rạp chiếu phim&#10;hospital: bệnh viện&#10;swimming pool: bể bơi"></textarea>
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <button class="btn btn-success" onclick="saveBulkVocabInput()">💾 Lưu Vào Tab Từ Vựng</button>
+        <button class="btn btn-secondary" onclick="toggleVocabImportBox()">Đóng</button>
+      </div>
+    </div>
+
     <div class="vocab-grid" id="vocab-container"></div>
   </div>
 
@@ -340,7 +358,6 @@
       <button onclick="closeVocabQuizModal()" style="background: none; border: none; font-size: 20px; font-weight: bold; color: #94A3B8; cursor: pointer;">✕</button>
     </div>
     
-    <!-- 5 Chế độ kiểm tra -->
     <div class="mode-tab-group">
       <button class="mode-tab-btn active" id="btn-mode-speak" onclick="setVocabQuizMode('speak')">🎤 Luyện Đọc</button>
       <button class="mode-tab-btn" id="btn-mode-spelling" onclick="setVocabQuizMode('spelling')">⌨️ Tự Luận</button>
@@ -354,7 +371,6 @@
       <span id="vq-score" style="font-weight: bold; color: #047857; font-size: 14px;">Đúng: 0 ⭐</span>
     </div>
 
-    <!-- Hộp hiển thị từ / Flashcard -->
     <div class="flashcard-box" id="vq-card" onclick="flipFlashcard()">
       <div class="flashcard-word" id="vq-word">Word</div>
       <div class="flashcard-meaning" id="vq-meaning" style="display: none;">nghĩa</div>
@@ -368,13 +384,11 @@
       <button class="btn btn-primary" id="btn-fc-next" style="display: none; padding: 6px 12px;" onclick="nextFlashcard()">Tiếp →</button>
     </div>
 
-    <!-- 1. Trắc nghiệm -->
     <div id="vq-choice-container" style="display: none;">
       <div style="font-size: 14px; font-weight: bold; color: #334155; margin-bottom: 8px;">Chọn nghĩa tiếng Việt chính xác:</div>
       <div class="quiz-vocab-options" id="vq-options"></div>
     </div>
 
-    <!-- 2. Tự luận (Nghe & Gõ từ) -->
     <div id="vq-spelling-container" class="spelling-box">
       <div id="spelling-viet-meaning" style="font-size: 16px; font-weight: bold; color: #047857; margin-bottom: 4px;">Nghĩa: ...</div>
       <div id="spelling-length-hint" style="font-size: 13px; color: #64748B; margin-bottom: 8px;">Gợi ý độ dài từ: _ _ _ _ _</div>
@@ -385,7 +399,6 @@
       </div>
     </div>
 
-    <!-- 3. Sắp xếp chữ cái -->
     <div id="vq-scramble-container" class="scramble-box">
       <div id="scramble-meaning" style="font-size: 16px; font-weight: bold; color: #047857; margin-bottom: 10px;">Nghĩa: ...</div>
       <div style="font-size: 13px; color: #64748B; margin-bottom: 6px;">Bé hãy chạm vào các chữ cái để ghép đúng từ nhé:</div>
@@ -481,8 +494,8 @@
     "cinema": "rạp chiếu phim", "film": "bộ phim", "supermarket": "siêu thị",
     "market": "khu chợ", "library": "thư viện", "quiet": "yên lặng",
     "morning": "buổi sáng", "food": "thức ăn", "buy": "mua sắm",
-    "bank": "ngân hàng", "bus station": "trạm xe buýt", "car park": "bãi đỗ xe",
-    "hospital": "bệnh viện", "swimming pool": "hồ bơi", "sports center": "trung tâm thể thao", "sports centre": "trung tâm thể thao",
+    "bank": "ngân hàng", "bus station": "bến xe buýt", "car park": "bãi đỗ xe",
+    "hospital": "bệnh viện", "swimming pool": "bể bơi", "sports center": "trung tâm thể thao", "sports centre": "trung tâm thể thao",
     "shop": "cửa hàng", "opposite": "đối diện", "child": "đứa trẻ", "park": "công viên", "road": "con đường", "home": "nhà",
     "house": "ngôi nhà", "flat": "căn hộ", "address": "địa chỉ", "upstairs": "lên lầu",
     "wardrobe": "tủ quần áo", "worker": "người lao động",
@@ -704,19 +717,44 @@ Child: Yes, I must!`;
     renderLesson(unit);
   }
 
-  // --- HÀM KIỂM TRA ĐỊNH DẠNG TỪ VỰNG KÈM NGHĨA TIẾNG VIỆT ---
-  function parseVocabListText(text) {
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
-    if (lines.length === 0) return null;
+  // KHU VỰC NHẬP BÀI ĐỌC CHÍNH (CHỈ CHẤP NHẬN BÀI TIẾNG ANH)
+  function saveAndApplyCurrentScript() {
+    const rawText = document.getElementById('custom-script').value.trim();
+    if (!rawText) return alert("Vui lòng nhập nội dung!");
 
-    // Kiểm tra xem văn bản có chứa ký tự tiếng Việt đặc trưng không
+    // Kiểm tra nếu người dùng vô tình dán tiếng Việt vào khung này
     const vietnameseCharRegex = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
-    
-    let parsedList = [];
-    let countPairFormat = 0;
+    if (vietnameseCharRegex.test(rawText)) {
+      const confirmUse = confirm("Phát hiện văn bản có chứa tiếng Việt! Khung này chỉ dành cho bài đọc tiếng Anh. Nếu bạn muốn thêm danh sách từ vựng, vui lòng bấm vào Tab 'Từ Vựng' -> chọn '📋 Nhập Danh Sách Từ Vựng'. Bạn có muốn tiếp tục lưu vào bài đọc không?");
+      if (!confirmUse) return;
+    }
 
-    for (let line of lines) {
-      // Nhận diện dấu phân cách như dấu hai chấm : hoặc dấu gạch ngang -
+    const idx = units.findIndex(u => u.id === currentUnitId);
+    if (idx !== -1) {
+      units[idx].text = rawText;
+      localStorage.setItem('english_app_units', JSON.stringify(units));
+      renderLesson(units[idx]);
+    }
+    alert("Đã lưu và cập nhật bài đọc thành công!");
+  }
+
+  // --- TÍNH NĂNG MỚI: KHU VỰC NHẬP DANH SÁCH TỪ VỰNG RIÊNG BIỆT ---
+  function toggleVocabImportBox() {
+    const box = document.getElementById('vocab-import-box');
+    box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    if (box.style.display === 'block') {
+      document.getElementById('vocab-bulk-input').focus();
+    }
+  }
+
+  function saveBulkVocabInput() {
+    const input = document.getElementById('vocab-bulk-input').value.trim();
+    if (!input) return alert("Vui lòng dán danh sách từ vựng!");
+
+    const lines = input.split('\n').map(l => l.trim()).filter(l => l !== '');
+    let newVocabList = [];
+
+    lines.forEach(line => {
       let parts = null;
       if (line.includes(':')) {
         parts = line.split(':');
@@ -728,58 +766,26 @@ Child: Yes, I must!`;
         const eng = parts[0].trim();
         const vie = parts.slice(1).join(':').trim();
         if (eng && vie) {
-          parsedList.push({ word: eng, meaning: vie });
-          countPairFormat++;
+          newVocabList.push({ word: eng, meaning: vie });
+          kidsDictionary[eng.toLowerCase()] = vie;
         }
       }
+    });
+
+    if (newVocabList.length === 0) {
+      return alert("Không nhận diện được định dạng! Vui lòng nhập theo mẫu:\nbank: ngân hàng\ncinema: rạp chiếu phim");
     }
-
-    // Nếu có ít nhất 2 dòng đúng định dạng "từ : nghĩa" hoặc văn bản có tiếng Việt theo từng dòng
-    if (countPairFormat >= 2 || (parsedList.length > 0 && vietnameseCharRegex.test(text))) {
-      return parsedList;
-    }
-
-    return null;
-  }
-
-  // --- LƯU & CẬP NHẬT THÔNG MINH ---
-  function saveAndApplyCurrentScript() {
-    const rawText = document.getElementById('custom-script').value.trim();
-    if (!rawText) return alert("Vui lòng nhập nội dung!");
 
     const idx = units.findIndex(u => u.id === currentUnitId);
-    if (idx === -1) return;
-
-    // 1. Kiểm tra xem người dùng có nhập danh sách "Từ Vựng : Nghĩa" không
-    const vocabPairs = parseVocabListText(rawText);
-
-    if (vocabPairs && vocabPairs.length > 0) {
-      // Nạp vào từ điển nội bộ
-      vocabPairs.forEach(p => {
-        kidsDictionary[p.word.toLowerCase()] = p.meaning;
-      });
-
-      // Lưu danh sách từ vựng độc quyền cho bài học này
-      units[idx].customVocab = vocabPairs;
+    if (idx !== -1) {
+      units[idx].customVocab = newVocabList;
       localStorage.setItem('english_app_units', JSON.stringify(units));
-
-      // Cập nhật DUY NHẤT Tab Từ Vựng, giữ nguyên 5 Tab bài đọc trước đó
+      
+      // Chỉ cập nhật duy nhất Tab Từ Vựng, 5 Tab còn lại hoàn toàn không bị ảnh hưởng
       renderVocabTab(units[idx]);
-
-      // Tự động chuyển ngay sang Tab Từ Vựng để xem kết quả
-      const vocabTabBtn = document.querySelectorAll('.tab-btn')[4];
-      switchTab('vocab', vocabTabBtn);
-
-      alert(`Đã nhận diện danh sách ${vocabPairs.length} từ vựng kèm nghĩa tiếng Việt!\nCác Tab còn lại vẫn được giữ nguyên bài đọc chuẩn.`);
-      return;
+      toggleVocabImportBox();
+      alert(`Đã cập nhật thành công ${newVocabList.length} từ vựng vào Tab Từ Vựng!\nCác bài tập Nghe, Nói, Grammar vẫn giữ nguyên bài đọc chuẩn.`);
     }
-
-    // 2. Nếu là văn bản/hội thoại tiếng Anh thông thường -> Cập nhật toàn bộ 6 Tab
-    units[idx].text = rawText;
-    units[idx].customVocab = null; // Tự động trích xuất từ mới theo bài đọc mới
-    localStorage.setItem('english_app_units', JSON.stringify(units));
-    renderLesson(units[idx]);
-    alert("Đã lưu và cập nhật câu chuyện mới cho toàn bộ các Tab!");
   }
 
   function switchTab(tabId, el) {
@@ -1219,7 +1225,7 @@ Child: Yes, I must!`;
             ${options.map((opt, oIdx) => `
               <label class="quiz-option-item" id="opt-lbl-${qId}-${opt.val}">
                 <input type="radio" name="${qId}" value="${opt.val}">
-                <span>${String.fromCharCode(97 + oIdx)})${opt.label}</span>
+                <span>${String.fromCharCode(97 + oIdx)}) ${opt.label}</span>
               </label>
             `).join('')}
           </div>
@@ -1403,7 +1409,7 @@ Child: Yes, I must!`;
         .slice(0, 11);
 
       vocabItems = cleanWords.map(w => ({
-        word: w.charAt(0).toUpperCase() + w.slice(1),
+        word: w,
         meaning: getFastMeaning(w) || null
       }));
     }
@@ -1459,7 +1465,6 @@ Child: Yes, I must!`;
     vqCurrentIndex = 0;
     vqCorrectCount = 0;
     
-    // Bật hiệu ứng che mờ sâu và chống cuộn nền
     document.body.classList.add('modal-open');
     document.getElementById('vocab-quiz-modal').style.display = 'flex';
     setVocabQuizMode(initialMode);
